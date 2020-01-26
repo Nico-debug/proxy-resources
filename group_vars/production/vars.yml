@@ -1,0 +1,14 @@
+Sts.Role: arn:aws:iam::398099758646:role/Admin
+
+#Network settings
+Stack.Inputs.VpcName: Default
+
+#application Settings
+Stack.Inputs.ApplicationDesiredCount: 1
+Stack.Inputs.ApplicationImageId: ami-0a0d4050194a696a1
+Stack.Inputs.ApplicationInstanceType: t2.micro
+Stack.Inputs.KeyName: admin
+
+#proxy settings
+Stack.Inputs.ProxyImage: 398099758646.dkr.ecr.ap-northeast-1.amazonaws.com/dockerproductionaws/squid
+Stack.Inputs.ProxyWhitelist: .nicolasmartin58.org
