@@ -1,10 +1,10 @@
 # Deployment flags
-FLAGS = $(ROLLBACK_FLAG) $(POLICY_FLAG) $(DEBUG_FLAG) $(VERBOSE_FLAG) $(CODEBUILD_FLAG)
+FLAGS = $(ROLLBACK_FLAG) $(POLICY_FLAG) $(DEBUG_FLAG) $(VERBOSE_FLAG) $(STDERR)
 ROLLBACK_FLAG = $(if $(findstring /disable_rollback,$(ARGS)),-e 'Stack.DisableRollback=true',)
 POLICY_FLAG = $(if $(findstring /disable_policy,$(ARGS)),-e 'Stack.DisablePolicy=true',)
 DEBUG_FLAG = $(if $(findstring /debug,$(ARGS)),-e 'debug=true',)
 VERBOSE_FLAG = $(if $(findstring /verbose,$(ARGS)),-vvv,)
-CODEBUILD_FLAG = $(if $(findstring /codebuild,$(ARGS)),-e 'Stack.BuildFolder=build',)
+STDERR = 2>/dev/null
 
 include Makefile.settings
 
@@ -25,7 +25,7 @@ environment/%:
 
 generate/%:
 	${INFO} "Generating templates for $*..."
-	@ ansible-playbook site.yml -e 'Sts.Disabled=true' -e env=$* $(FLAGS) --tags generate
+	@ ansible-playbook site.yml -e 'Sts.Disable=true' -e env=$* $(FLAGS) --tags generate
 	${INFO} "Generation complete"
 
 deploy/%:
@@ -37,3 +37,7 @@ delete/%:
 	${INFO} "Deleting environment $*..."
 	@ ansible-playbook site.yml -e env=$* -e 'Stack.Delete=true' $(FLAGS)
 	${INFO} "Delete complete"
+
+# Do not interpret arguments as targets
+%:
+	@:

@@ -8,7 +8,7 @@
 # Deploy CloudFormation Stack
 - name: Stack Deployment
   hosts: "{{ env }}"
-  environment: "{{ Sts.Credentials }}"
+  environment: "{{ sts_creds }}"
   roles:
     - aws-cloudformation
 
